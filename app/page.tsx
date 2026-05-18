@@ -471,7 +471,7 @@ export default function MasAmicusWebsite() {
                       className="relative z-20 h-full w-full object-cover"
                       controls={playingIndex === index}
                       playsInline
-                      preload="metadata"
+                      preload="none"
                       poster={batch.poster}
                       onEnded={() => setPlayingIndex(null)}
                       onPause={() => {
