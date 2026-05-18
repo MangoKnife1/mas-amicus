@@ -20,7 +20,7 @@ export async function GET(_request: Request, context: any) {
   let targetUrl: string | null = null;
 
   try {
-    const { blobs } = await list({ store, prefix: name, limit: 25 });
+    const { blobs } = await (list as any)({ store, prefix: name, limit: 25 });
     const blob = blobs.find(
       (entry) =>
         entry.pathname === name ||
