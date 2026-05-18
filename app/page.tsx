@@ -1,14 +1,41 @@
 import Image from "next/image";
 
 export default function MasAmicusWebsite() {
-  const batch = {
-    year: "2025",
-    name: "Batch Nevuah",
-    role: "Jonah-inspired chapter",
-    motto:
-      "From the depths to the mission field, a chapter shaped by calling, repentance, and renewed direction.",
-    song: "/called-to-go.mp3",
-  };
+  const batches = [
+    {
+      year: "2023",
+      name: "Batch Conquerors",
+      role: "Rooted in 2 Samuel",
+      motto:
+        "A chapter of courage, covenant, and steadfast leadership shaped by David's story in 2 Samuel.",
+      video: "/conquerors-video.mp4",
+      themeLabel: "Courage under God",
+      themeCopy:
+        "Inspired by David's rise, repentance, and reliance on God through the highs and lows of leadership.",
+    },
+    {
+      year: "2024",
+      name: "Batch Exodus",
+      role: "Rooted in Exodus",
+      motto:
+        "A chapter defined by deliverance, trust, and the journey from bondage into promise.",
+      video: "/exodus-video.mp4",
+      themeLabel: "Freedom and direction",
+      themeCopy:
+        "Inspired by Moses, the sea crossing, and the God who leads His people step by step.",
+    },
+    {
+      year: "2025",
+      name: "Batch Nevuah",
+      role: "Rooted in Jonah",
+      motto:
+        "A chapter shaped by calling, repentance, and renewed direction after the deep place.",
+      video: "/nevuah-video.mp4",
+      themeLabel: "Called again",
+      themeCopy:
+        "Inspired by Jonah's journey from resistance to obedience and a second chance to serve.",
+    },
+  ];
 
   return (
     <main className="min-h-screen overflow-hidden text-[#12468f]">
@@ -28,11 +55,9 @@ export default function MasAmicusWebsite() {
             </div>
             <div>
               <p className="text-xs uppercase tracking-[0.34em] text-[#5b8fc4]">
-                Mas Amicus
+                MAS - AMiCUS
               </p>
-              <p className="font-semibold text-[#12468f]">
-                Brotherhood in motion
-              </p>
+              <p className="font-semibold text-[#12468f]">UM Main Chapter</p>
             </div>
           </a>
 
@@ -40,20 +65,11 @@ export default function MasAmicusWebsite() {
             <a className="transition hover:text-[#12468f]" href="#about">
               About
             </a>
-            <a className="transition hover:text-[#12468f]" href="#pillars">
-              Focus
-            </a>
             <a className="transition hover:text-[#12468f]" href="#batches">
               Batches
             </a>
           </nav>
 
-          <a
-            href="#batches"
-            className="rounded-full border border-[#8dbce4]/60 bg-white px-4 py-2 text-sm font-semibold text-[#12468f] transition hover:bg-[#f3faff]"
-          >
-            View batches
-          </a>
         </div>
       </header>
 
@@ -74,9 +90,11 @@ export default function MasAmicusWebsite() {
             </h1>
 
             <p className="mt-6 max-w-2xl text-lg leading-8 text-[#356fa8] md:text-xl">
-              Based on the official AMiCUS description, the movement supports
-              the spiritual, intellectual, and social needs of Seventh-day
-              Adventist students, especially on secular campuses.
+              Empowering Seventh-day Adventist students at the University of
+              Mindanao, we nurture spiritual, intellectual, and social growth.
+              We provide a supportive sanctuary of faith and community,
+              equipping young adults to excel academically while standing firm
+              in their devotion to Christ.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
@@ -96,21 +114,22 @@ export default function MasAmicusWebsite() {
 
             <div className="mt-12 grid max-w-2xl grid-cols-3 gap-4">
               <div className="rounded-3xl border border-[#9fc7e8]/45 bg-white/80 p-5 backdrop-blur-xl">
+                <p className="text-3xl font-bold text-[#12468f]">1975</p>
+                <p className="mt-2 text-sm text-[#4c7bab]">
+                  Year Founded to unite and strengthen Adventist students
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[#9fc7e8]/45 bg-white/80 p-5 backdrop-blur-xl">
+                <p className="text-3xl font-bold text-[#12468f]">4</p>
+                <p className="mt-2 text-sm text-[#4c7bab]">
+                  Holistic Faculties developed: Spiritual, Mental, Physical, and
+                  Social
+                </p>
+              </div>
+              <div className="rounded-3xl border border-[#9fc7e8]/45 bg-white/80 p-5 backdrop-blur-xl">
                 <p className="text-3xl font-bold text-[#12468f]">3</p>
                 <p className="mt-2 text-sm text-[#4c7bab]">
-                  Spiritual, intellectual, and social growth
-                </p>
-              </div>
-              <div className="rounded-3xl border border-[#9fc7e8]/45 bg-white/80 p-5 backdrop-blur-xl">
-                <p className="text-3xl font-bold text-[#12468f]">1</p>
-                <p className="mt-2 text-sm text-[#4c7bab]">
-                  Shared ministry community
-                </p>
-              </div>
-              <div className="rounded-3xl border border-[#9fc7e8]/45 bg-white/80 p-5 backdrop-blur-xl">
-                <p className="text-3xl font-bold text-[#12468f]">∞</p>
-                <p className="mt-2 text-sm text-[#4c7bab]">
-                  A lasting student network
+                  Angels&apos; Messages driving our campus evangelism and mission
                 </p>
               </div>
             </div>
@@ -136,18 +155,18 @@ export default function MasAmicusWebsite() {
               <div className="relative z-10 flex items-center justify-between gap-4">
                 <div>
                   <p className="text-xs uppercase tracking-[0.32em] text-[#5b8fc4]">
-                    Official identity
+                    OUR FELLOWSHIP
                   </p>
                   <h2 className="mt-2 font-[family-name:var(--font-fraunces)] text-3xl text-[#12468f] md:text-4xl">
-                    A clean, logo-matched visual system.
+                    Uniting Adventist students in faith, service, and purpose.
                   </h2>
                 </div>
                 <div className="rounded-2xl border border-[#9fc7e8]/50 bg-white px-4 py-3 text-right">
                   <p className="text-xs uppercase tracking-[0.28em] text-[#5b8fc4]">
-                    Current mood
+                    CHAPTER STATUS
                   </p>
                   <p className="mt-1 text-sm font-semibold text-[#12468f]">
-                    Bright, calm, blue
+                    Active & Growing
                   </p>
                 </div>
               </div>
@@ -155,25 +174,27 @@ export default function MasAmicusWebsite() {
               <div className="relative z-10 mt-8 grid gap-4 sm:grid-cols-2">
                 <div className="rounded-[1.5rem] border border-[#9fc7e8]/45 bg-[#f6fbff] p-5">
                   <p className="text-sm uppercase tracking-[0.25em] text-[#5b8fc4]">
-                    Core promise
+                    OUR MISSION
                   </p>
                   <p className="mt-3 text-lg font-semibold text-[#12468f]">
-                    Support for students in college and university.
+                    Preserving faith in higher education.
                   </p>
                   <p className="mt-2 text-sm leading-6 text-[#4c7bab]">
-                    A home for growth that is spiritual, intellectual, and
-                    social.
+                    Providing UM students with a spiritual sanctuary,
+                    intentional mentorship, and true Christian fellowship on a
+                    secular campus.
                   </p>
                 </div>
                 <div className="rounded-[1.5rem] border border-[#9fc7e8]/45 bg-[#f6fbff] p-5">
                   <p className="text-sm uppercase tracking-[0.25em] text-[#5b8fc4]">
-                    Visual tone
+                    THE MOTTO
                   </p>
                   <p className="mt-3 text-lg font-semibold text-[#12468f]">
-                    Simple, airy, and welcoming.
+                    Excelsior Forevermore.
                   </p>
                   <p className="mt-2 text-sm leading-6 text-[#4c7bab]">
-                    The palette follows the blue-and-white language of the logo.
+                    Striving for higher spiritual and academic excellence while
+                    serving as a beacon of light across our campus.
                   </p>
                 </div>
               </div>
@@ -196,18 +217,19 @@ export default function MasAmicusWebsite() {
             </h2>
           </div>
           <p className="self-end text-base leading-8 text-[#4c7bab] md:text-lg">
-            The official description points to a supportive campus ministry
-            focused on spiritual growth, intellectual development, and social
-            connection. The page now uses that information directly so the
-            content feels accurate and less decorative.
+            For an Adventist student, entering a public or non-Adventist
+            university can mean facing immense academic, social, and secular
+            pressures alone. MAS-AMiCUS matters because it transforms isolation
+            into community. By functioning as an extended spiritual family, it
+            ensures that students do not have to compromise their values or the
+            Sabbath. Instead of losing their faith, students are trained to see
+            their campus as their primary mission field—proving that you can
+            excel academically while staying wholly committed to Christ.
           </p>
         </div>
       </section>
 
-      <section
-        id="batches"
-        className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-16"
-      >
+      <section id="batches" className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-16">
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-[#5b8fc4]">
@@ -218,68 +240,74 @@ export default function MasAmicusWebsite() {
             </h2>
           </div>
           <p className="hidden max-w-md text-sm leading-7 text-[#4c7bab] md:block">
-            Batch Nevuah draws on Jonah&apos;s story of being called, resisting,
-            and returning with renewed purpose.
+            Three chapters, three videos, and three biblical themes that trace
+            a path from courage to freedom to renewed calling.
           </p>
         </div>
 
-        <article className="mt-10 overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/82 p-6 shadow-[0_20px_50px_rgba(31,110,184,0.08)]">
-          <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-[#1f6eb8] via-[#78d5f0] to-[#bfeaf8]" />
-          <div className="grid gap-6 lg:grid-cols-[0.7fr_1.3fr] lg:items-center">
-            <div className="rounded-[1.75rem] border border-[#9fc7e8]/45 bg-[linear-gradient(180deg,rgba(31,110,184,0.95),rgba(120,213,240,0.8))] p-7 text-white shadow-[0_18px_40px_rgba(31,110,184,0.18)]">
-              <p className="text-xs uppercase tracking-[0.32em] text-white/80">
-                {batch.year}
-              </p>
-              <h3 className="mt-4 font-[family-name:var(--font-fraunces)] text-4xl leading-tight">
-                {batch.name}
-              </h3>
-              <p className="mt-3 text-sm uppercase tracking-[0.3em] text-white/80">
-                {batch.role}
-              </p>
-            </div>
-
-            <div>
-              <p className="text-sm uppercase tracking-[0.32em] text-[#5b8fc4]">
-                Jonah theme
-              </p>
-              <h3 className="mt-4 font-[family-name:var(--font-fraunces)] text-3xl text-[#12468f] md:text-4xl">
-                Called from the deep, sent with purpose.
-              </h3>
-              <p className="mt-4 max-w-3xl text-base leading-8 text-[#4c7bab] md:text-lg">
-                Batch Nevuah is framed around Jonah&apos;s journey: a reluctant
-                calling, a storm, a deep place of reflection, and a renewed
-                return to mission. It carries the idea that purpose can be
-                rediscovered and answered with courage.
-              </p>
-
-              <p className="mt-4 max-w-3xl text-base leading-8 text-[#4c7bab] md:text-lg">
-                {batch.motto}
-              </p>
-
-              <div className="mt-6 rounded-[1.3rem] border border-[#9fc7e8]/45 bg-[#f6fbff] p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-[#5b8fc4]">
-                  Batch song
-                </p>
-                <audio controls className="mt-3 w-full">
-                  <source src={batch.song} type="audio/mpeg" />
-                </audio>
+        <div className="mt-10 grid gap-5 lg:grid-cols-3">
+          {batches.map((batch) => (
+            <article
+              key={batch.year}
+              className="overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/82 shadow-[0_20px_50px_rgba(31,110,184,0.08)]"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb]">
+                <video
+                  className="h-full w-full object-cover"
+                  controls
+                  playsInline
+                  preload="metadata"
+                >
+                  <source src={batch.video} type="video/mp4" />
+                </video>
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-white/75">
+                    {batch.year}
+                  </p>
+                  <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl text-white">
+                    {batch.name}
+                  </h3>
+                </div>
               </div>
-            </div>
-          </div>
-        </article>
+
+              <div className="p-6">
+                <p className="text-sm uppercase tracking-[0.3em] text-[#5b8fc4]">
+                  {batch.role}
+                </p>
+                <p className="mt-3 text-sm leading-7 text-[#4c7bab]">
+                  {batch.motto}
+                </p>
+
+                <div className="mt-5 rounded-[1.3rem] border border-[#9fc7e8]/45 bg-[#f6fbff] p-4">
+                  <p className="text-xs uppercase tracking-[0.3em] text-[#5b8fc4]">
+                    Theme
+                  </p>
+                  <p className="mt-2 text-sm font-semibold text-[#12468f]">
+                    {batch.themeLabel}
+                  </p>
+                  <p className="mt-2 text-sm leading-7 text-[#4c7bab]">
+                    {batch.themeCopy}
+                  </p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </section>
 
       <footer className="mx-auto w-full max-w-7xl px-6 pb-12 pt-8 lg:px-8 lg:pb-16">
         <div className="rounded-[2rem] border border-[#9fc7e8]/45 bg-white/80 px-6 py-8 text-center shadow-[0_20px_50px_rgba(31,110,184,0.08)] backdrop-blur-xl md:px-10 md:py-10">
           <p className="text-xs uppercase tracking-[0.35em] text-[#5b8fc4]">
-            Mas Amicus
+            MAS - AMiCUS
           </p>
           <h2 className="mt-4 font-[family-name:var(--font-fraunces)] text-3xl text-[#12468f] md:text-5xl">
             Built for belonging, service, and growth.
           </h2>
           <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#4c7bab] md:text-base">
-            A lighter landing page that follows the logo colors, uses the
-            official ministry description, and keeps only the essentials.
+            Connect with a community that grows together in faith, excellence,
+            and fellowship. Whether you are looking for a spiritual home on
+            campus, mentorship, or meaningful service, there is a place for you
+            here at the University of Mindanao Main Chapter.
           </p>
           <div className="mt-8 flex flex-wrap justify-center gap-3 text-sm text-[#2f6fae]">
             <a
