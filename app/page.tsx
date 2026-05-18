@@ -495,7 +495,6 @@ export default function MasAmicusWebsite() {
                         type="button"
                         onClick={() => playVideo(index)}
                         className="absolute inset-0 z-10 flex items-center justify-center bg-[linear-gradient(180deg,rgba(6,24,47,0.16),rgba(6,24,47,0.42))] text-white transition hover:bg-[linear-gradient(180deg,rgba(6,24,47,0.22),rgba(6,24,47,0.55))]"
-                        aria-label={`Play ${batch.name} video`}
                       >
                         <span className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/15 text-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] backdrop-blur">
                           ▶
