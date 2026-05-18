@@ -22,19 +22,15 @@ async function resolveVideoUrl(videoName: string) {
     );
 
     if (blob) {
-      return [videoName, blob.url] as [string, string];
+      // We return a same-origin proxy URL so the browser avoids CORS issues
+      return [videoName, `/api/blob-videos/proxy/${videoName}`] as [string, string];
     }
   } catch (err) {
     // listing may fail locally or without credentials — we'll fall back below
   }
 
-  // Fallback: try to construct a public URL using the store name.
-  const store = process.env.NEXT_PUBLIC_BLOB_STORE_NAME || "amicus-blob";
-
-  // Try common file extensions, prefer .mp4
-  const candidate = publicBlobUrl(store, `${videoName}.mp4`);
-
-  return [videoName, candidate] as [string, string];
+  // Fallback: return the proxy URL which will attempt to fetch the public store URL.
+  return [videoName, `/api/blob-videos/proxy/${videoName}`] as [string, string];
 }
 
 export async function GET() {
