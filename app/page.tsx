@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function MasAmicusWebsite() {
   const batches = [
@@ -44,7 +44,9 @@ export default function MasAmicusWebsite() {
   ];
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
-    const [selectedIndex, setSelectedIndex] = useState(0);
+  const carouselRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
 
   const playVideo = (index: number) => {
@@ -64,6 +66,102 @@ export default function MasAmicusWebsite() {
 
     setPlayingIndex(index);
     void nextVideo.play();
+  };
+
+  const pauseVideo = (index: number) => {
+    const nextVideo = videoRefs.current[index];
+
+    if (nextVideo) {
+      nextVideo.pause();
+    }
+
+    setPlayingIndex((current) => (current === index ? null : current));
+  };
+
+  useEffect(() => {
+    videoRefs.current.forEach((video, index) => {
+      if (!video || index === selectedIndex) {
+        return;
+      }
+
+      video.pause();
+      video.currentTime = 0;
+    });
+  }, [selectedIndex]);
+
+  useEffect(() => {
+    const cards = cardRefs.current.filter(
+      (card): card is HTMLElement => card !== null,
+    );
+
+    if (cards.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            return;
+          }
+
+          const index = Number(entry.target.getAttribute("data-batch-index"));
+
+          if (!Number.isNaN(index)) {
+            pauseVideo(index);
+          }
+        });
+      },
+      {
+        threshold: 0.5,
+      },
+    );
+
+    cards.forEach((card) => observer.observe(card));
+
+    return () => observer.disconnect();
+  }, [selectedIndex]);
+
+  const syncSelectedIndex = () => {
+    const container = carouselRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    const containerCenter = container.scrollLeft + container.clientWidth / 2;
+    let closestIndex = 0;
+    let closestDistance = Number.POSITIVE_INFINITY;
+
+    cardRefs.current.forEach((card, index) => {
+      if (!card) {
+        return;
+      }
+
+      const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+      const distance = Math.abs(cardCenter - containerCenter);
+
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = index;
+      }
+    });
+
+    setSelectedIndex(closestIndex);
+  };
+
+  const goToBatch = (index: number) => {
+    const targetCard = cardRefs.current[index];
+
+    if (targetCard) {
+      targetCard.scrollIntoView({
+        behavior: "smooth",
+        inline: "center",
+        block: "nearest",
+      });
+    }
+
+    setSelectedIndex(index);
   };
 
   return (
@@ -271,7 +369,7 @@ export default function MasAmicusWebsite() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-[14rem_1fr] lg:items-center">
+        <div className="mt-10 grid gap-5 lg:grid-cols-[14rem_1fr] lg:items-start">
           <aside className="flex flex-row gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:flex-col lg:overflow-visible lg:pb-0">
             {batches.map((batch, index) => {
               const isActive = selectedIndex === index;
@@ -280,7 +378,7 @@ export default function MasAmicusWebsite() {
                 <button
                   key={batch.year}
                   type="button"
-                  onClick={() => setSelectedIndex(index)}
+                  onClick={() => goToBatch(index)}
                   className={`group relative flex min-w-[10rem] items-center justify-between gap-3 rounded-r-[1.25rem] rounded-l-full border px-4 py-3 text-left transition duration-300 lg:min-w-0 ${
                     isActive
                       ? "border-[#1f6eb8] bg-[#1f6eb8] text-white shadow-[0_14px_30px_rgba(31,110,184,0.22)]"
@@ -311,22 +409,30 @@ export default function MasAmicusWebsite() {
             })}
           </aside>
 
-          <div className="relative min-h-[44rem] overflow-hidden rounded-[2.5rem] border border-[#9fc7e8]/45 bg-white/65 p-4 shadow-[0_20px_50px_rgba(31,110,184,0.08)] backdrop-blur-xl lg:p-6">
-            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,213,240,0.16),transparent_38%)]" />
-
+          <div
+            ref={carouselRef}
+            onScroll={syncSelectedIndex}
+            className="flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth rounded-[2.5rem] border border-[#9fc7e8]/45 bg-white/65 p-4 shadow-[0_20px_50px_rgba(31,110,184,0.08)] backdrop-blur-xl [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:p-6"
+          >
             {batches.map((batch, index) => {
               const isActive = selectedIndex === index;
-              const isBefore = index < selectedIndex;
+              const isNext = index > selectedIndex;
 
               return (
                 <article
                   key={batch.year}
-                  className={`absolute left-1/2 top-1/2 w-[min(92vw,42rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/92 shadow-[0_20px_50px_rgba(31,110,184,0.12)] transition-all duration-500 ${
+                  data-batch-index={index}
+                  ref={(element) => {
+                    cardRefs.current[index] = element;
+                  }}
+                  className={`relative min-w-[88%] snap-center overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/92 shadow-[0_20px_50px_rgba(31,110,184,0.12)] transition-all duration-300 sm:min-w-[74%] lg:min-w-[60%] ${
+                    index === 0 ? "lg:ml-0" : "lg:-ml-16 xl:-ml-20"
+                  } ${
                     isActive
-                      ? "z-30 scale-100 translate-y-0 rotate-0 opacity-100"
-                      : isBefore
-                        ? "z-10 -translate-x-[58%] scale-[0.88] rotate-[-10deg] opacity-60"
-                        : "z-10 translate-x-[58%] scale-[0.88] rotate-[10deg] opacity-60"
+                      ? "z-30 scale-100 rotate-0 opacity-100"
+                      : isNext
+                        ? "z-20 scale-[0.94] rotate-[2deg] opacity-70"
+                        : "z-10 scale-[0.94] -rotate-[2deg] opacity-70"
                   }`}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb] sm:aspect-[16/9]">
@@ -334,7 +440,7 @@ export default function MasAmicusWebsite() {
                       ref={(element) => {
                         videoRefs.current[index] = element;
                       }}
-                      className="h-full w-full object-cover"
+                      className="relative z-20 h-full w-full object-cover"
                       controls={playingIndex === index}
                       playsInline
                       preload="metadata"
@@ -352,7 +458,7 @@ export default function MasAmicusWebsite() {
                       <button
                         type="button"
                         onClick={() => playVideo(index)}
-                        className="absolute inset-0 flex items-center justify-center bg-[linear-gradient(180deg,rgba(6,24,47,0.16),rgba(6,24,47,0.42))] text-white transition hover:bg-[linear-gradient(180deg,rgba(6,24,47,0.22),rgba(6,24,47,0.55))]"
+                        className="absolute inset-0 z-10 flex items-center justify-center bg-[linear-gradient(180deg,rgba(6,24,47,0.16),rgba(6,24,47,0.42))] text-white transition hover:bg-[linear-gradient(180deg,rgba(6,24,47,0.22),rgba(6,24,47,0.55))]"
                         aria-label={`Play ${batch.name} video`}
                       >
                         <span className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/15 text-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] backdrop-blur">
@@ -361,7 +467,7 @@ export default function MasAmicusWebsite() {
                       </button>
                     ) : null}
 
-                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
+                    <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
                       <p className="text-xs uppercase tracking-[0.3em] text-white/75">
                         {batch.year}
                       </p>
@@ -390,6 +496,10 @@ export default function MasAmicusWebsite() {
                         {batch.themeCopy}
                       </p>
                     </div>
+
+                    <p className="mt-4 text-xs uppercase tracking-[0.28em] text-[#5b8fc4]">
+                      Swipe the deck or tap a year bookmark to move between batches.
+                    </p>
                   </div>
                 </article>
               );
