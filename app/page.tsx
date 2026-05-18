@@ -464,6 +464,7 @@ export default function MasAmicusWebsite() {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb] sm:aspect-[16/9]">
                     <video
+                      key={videoSources[batch.blobPath] ?? batch.video}
                       ref={(element) => {
                         videoRefs.current[index] = element;
                       }}
