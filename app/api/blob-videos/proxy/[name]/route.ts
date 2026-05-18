@@ -1,11 +1,19 @@
 import { list } from "@vercel/blob";
 import { NextResponse } from "next/server";
 
-export async function GET(
-  _request: Request,
-  { params }: { params: { name: string } },
-) {
-  const { name } = params;
+export async function GET(_request: Request, context: any) {
+  // `context.params` can be either an object or a Promise depending on Next.js types.
+  let params = context?.params;
+
+  if (params && typeof params.then === "function") {
+    try {
+      params = await params;
+    } catch (_) {
+      params = undefined;
+    }
+  }
+
+  const name = params?.name as string | undefined;
   const store = process.env.NEXT_PUBLIC_BLOB_STORE_NAME || "amicus-blob";
 
   // Try to find the exact blob URL via the SDK; fallback to public URL
@@ -35,7 +43,10 @@ export async function GET(
     const res = await fetch(targetUrl);
 
     if (!res.ok) {
-      return NextResponse.json({ error: "fetch_failed", status: res.status }, { status: res.status });
+      return NextResponse.json(
+        { error: "fetch_failed", status: res.status },
+        { status: res.status },
+      );
     }
 
     const headers = new Headers();
