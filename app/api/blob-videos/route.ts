@@ -18,7 +18,9 @@ async function resolveVideoUrl(videoName: string) {
 export async function GET() {
   try {
     const resolved = await Promise.all(videoNames.map(resolveVideoUrl));
-    const payload = Object.fromEntries(resolved.filter(Boolean) as Array<[string, string]>);
+    const payload = Object.fromEntries(
+      resolved.filter(Boolean) as Array<[string, string]>,
+    );
 
     return NextResponse.json(payload);
   } catch {
