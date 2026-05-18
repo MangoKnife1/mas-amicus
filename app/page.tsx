@@ -1,4 +1,7 @@
+"use client";
+
 import Image from "next/image";
+import { useRef, useState } from "react";
 
 export default function MasAmicusWebsite() {
   const batches = [
@@ -12,6 +15,7 @@ export default function MasAmicusWebsite() {
       themeLabel: "Courage under God",
       themeCopy:
         "Inspired by David's rise, repentance, and reliance on God through the highs and lows of leadership.",
+      poster: "/logo.jpg",
     },
     {
       year: "2024",
@@ -23,6 +27,7 @@ export default function MasAmicusWebsite() {
       themeLabel: "Freedom and direction",
       themeCopy:
         "Inspired by Moses, the sea crossing, and the God who leads His people step by step.",
+      poster: "/logo.jpg",
     },
     {
       year: "2025",
@@ -34,8 +39,31 @@ export default function MasAmicusWebsite() {
       themeLabel: "Called again",
       themeCopy:
         "Inspired by Jonah's journey from resistance to obedience and a second chance to serve.",
+      poster: "/logo.jpg",
     },
   ];
+
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const [playingIndex, setPlayingIndex] = useState<number | null>(null);
+
+  const playVideo = (index: number) => {
+    const nextVideo = videoRefs.current[index];
+
+    videoRefs.current.forEach((video, videoIndex) => {
+      if (video && videoIndex !== index) {
+        video.pause();
+        video.currentTime = 0;
+      }
+    });
+
+    if (!nextVideo) {
+      setPlayingIndex(index);
+      return;
+    }
+
+    setPlayingIndex(index);
+    void nextVideo.play();
+  };
 
   return (
     <main className="min-h-screen overflow-hidden text-[#12468f]">
@@ -98,12 +126,6 @@ export default function MasAmicusWebsite() {
             </p>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
-              <a
-                href="#batches"
-                className="rounded-full bg-[#1f6eb8] px-6 py-3.5 text-sm font-bold text-white transition duration-300 hover:-translate-y-0.5 hover:bg-[#155b98]"
-              >
-                View batches
-              </a>
               <a
                 href="#about"
                 className="rounded-full border border-[#8dbce4]/70 bg-white/80 px-6 py-3.5 text-sm font-semibold text-[#12468f] transition duration-300 hover:-translate-y-0.5 hover:bg-white"
@@ -229,7 +251,10 @@ export default function MasAmicusWebsite() {
         </div>
       </section>
 
-      <section id="batches" className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-16">
+      <section
+        id="batches"
+        className="mx-auto max-w-7xl px-6 py-10 lg:px-8 lg:py-16"
+      >
         <div className="flex items-end justify-between gap-6">
           <div>
             <p className="text-xs uppercase tracking-[0.35em] text-[#5b8fc4]">
@@ -245,21 +270,44 @@ export default function MasAmicusWebsite() {
           </p>
         </div>
 
-        <div className="mt-10 grid gap-5 lg:grid-cols-3">
-          {batches.map((batch) => (
+        <div className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+          {batches.map((batch, index) => (
             <article
               key={batch.year}
-              className="overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/82 shadow-[0_20px_50px_rgba(31,110,184,0.08)]"
+              className="min-w-[88%] snap-center overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/82 shadow-[0_20px_50px_rgba(31,110,184,0.08)] sm:min-w-[74%] lg:min-w-[60%]"
             >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb]">
+              <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb] sm:aspect-[16/9]">
                 <video
+                  ref={(element) => {
+                    videoRefs.current[index] = element;
+                  }}
                   className="h-full w-full object-cover"
-                  controls
+                  controls={playingIndex === index}
                   playsInline
                   preload="metadata"
+                  poster={batch.poster}
+                  onEnded={() => setPlayingIndex(null)}
+                  onPause={() => {
+                    if (playingIndex === index) {
+                      setPlayingIndex(null);
+                    }
+                  }}
                 >
                   <source src={batch.video} type="video/mp4" />
                 </video>
+                {playingIndex !== index ? (
+                  <button
+                    type="button"
+                    onClick={() => playVideo(index)}
+                    className="absolute inset-0 flex items-center justify-center bg-[linear-gradient(180deg,rgba(6,24,47,0.16),rgba(6,24,47,0.42))] text-white transition hover:bg-[linear-gradient(180deg,rgba(6,24,47,0.22),rgba(6,24,47,0.55))]"
+                    aria-label={`Play ${batch.name} video`}
+                  >
+                    <span className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/15 text-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] backdrop-blur">
+                      ▶
+                    </span>
+                  </button>
+                ) : null}
+
                 <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
                   <p className="text-xs uppercase tracking-[0.3em] text-white/75">
                     {batch.year}
