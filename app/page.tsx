@@ -12,8 +12,7 @@ export default function MasAmicusWebsite() {
       role: "Rooted in 2 Samuel",
       motto:
         "A chapter of courage, covenant, and steadfast leadership shaped by David's story in 2 Samuel.",
-      video:
-        "https://amicus-blob.public.blob.vercel-storage.com/conquerors-video.mp4",
+      video: "",
 
       themeLabel: "Courage under God",
       themeCopy:
@@ -27,8 +26,7 @@ export default function MasAmicusWebsite() {
       role: "Rooted in Exodus",
       motto:
         "A chapter defined by deliverance, trust, and the journey from bondage into promise.",
-      video:
-        "https://amicus-blob.public.blob.vercel-storage.com/exodus-video.mp4",
+      video: "",
       themeLabel: "Freedom and direction",
       themeCopy:
         "Inspired by Moses, the sea crossing, and the God who leads His people step by step.",
@@ -41,8 +39,7 @@ export default function MasAmicusWebsite() {
       role: "Rooted in Jonah",
       motto:
         "A chapter shaped by calling, repentance, and renewed direction after the deep place.",
-      video:
-        "https://amicus-blob.public.blob.vercel-storage.com/nevuah-video.mp4",
+      video: "",
       themeLabel: "Called again",
       themeCopy:
         "Inspired by Jonah's journey from resistance to obedience and a second chance to serve.",
@@ -464,15 +461,17 @@ export default function MasAmicusWebsite() {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb] sm:aspect-[16/9]">
                     <video
-                      key={videoSources[batch.blobPath] ?? batch.video}
+                      key={videoSources[batch.blobPath]}
                       ref={(element) => {
                         videoRefs.current[index] = element;
                       }}
-                      className="relative z-20 h-full w-full object-cover"
+                      className="h-full w-full object-cover"
                       controls={playingIndex === index}
                       playsInline
-                      preload="none"
+                      preload="metadata"
                       poster={batch.poster}
+                      muted
+                      crossOrigin="anonymous"
                       onEnded={() => setPlayingIndex(null)}
                       onPause={() => {
                         if (playingIndex === index) {
@@ -481,10 +480,16 @@ export default function MasAmicusWebsite() {
                       }}
                     >
                       <source
-                        src={videoSources[batch.blobPath] ?? batch.video}
+                        src={videoSources[batch.blobPath]}
                         type="video/mp4"
                       />
                     </video>
+
+                    {/* DEBUG */}
+                    <p className="absolute top-2 left-2 z-50 rounded bg-black/70 px-2 py-1 text-xs text-white">
+                      {videoSources[batch.blobPath] || "Loading video..."}
+                    </p>
+
                     {playingIndex !== index ? (
                       <button
                         type="button"
@@ -497,7 +502,6 @@ export default function MasAmicusWebsite() {
                         </span>
                       </button>
                     ) : null}
-
                     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
                       <p className="text-xs uppercase tracking-[0.3em] text-white/75">
                         {batch.year}
