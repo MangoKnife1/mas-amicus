@@ -12,7 +12,9 @@ export default function MasAmicusWebsite() {
       role: "Rooted in 2 Samuel",
       motto:
         "A chapter of courage, covenant, and steadfast leadership shaped by David's story in 2 Samuel.",
-      video: process.env.NEXT_PUBLIC_BLOB_CONQUERORS_VIDEO_URL ?? "/conquerors-video.mp4",
+      video:
+        "https://amicus-blob.public.blob.vercel-storage.com/conquerors-video.mp4",
+
       themeLabel: "Courage under God",
       themeCopy:
         "Inspired by David's rise, repentance, and reliance on God through the highs and lows of leadership.",
@@ -25,7 +27,8 @@ export default function MasAmicusWebsite() {
       role: "Rooted in Exodus",
       motto:
         "A chapter defined by deliverance, trust, and the journey from bondage into promise.",
-      video: process.env.NEXT_PUBLIC_BLOB_EXODUS_VIDEO_URL ?? "/exodus-video.mp4",
+      video:
+        "https://amicus-blob.public.blob.vercel-storage.com/exodus-video.mp4",
       themeLabel: "Freedom and direction",
       themeCopy:
         "Inspired by Moses, the sea crossing, and the God who leads His people step by step.",
@@ -38,7 +41,8 @@ export default function MasAmicusWebsite() {
       role: "Rooted in Jonah",
       motto:
         "A chapter shaped by calling, repentance, and renewed direction after the deep place.",
-      video: process.env.NEXT_PUBLIC_BLOB_NEVUAH_VIDEO_URL ?? "/nevuah-video.mp4",
+      video:
+        "https://amicus-blob.public.blob.vercel-storage.com/nevuah-video.mp4",
       themeLabel: "Called again",
       themeCopy:
         "Inspired by Jonah's journey from resistance to obedience and a second chance to serve.",
@@ -219,7 +223,6 @@ export default function MasAmicusWebsite() {
               Batches
             </a>
           </nav>
-
         </div>
       </header>
 
@@ -273,7 +276,8 @@ export default function MasAmicusWebsite() {
               <div className="rounded-3xl border border-[#9fc7e8]/45 bg-white/80 p-5 backdrop-blur-xl">
                 <p className="text-3xl font-bold text-[#12468f]">3</p>
                 <p className="mt-2 text-sm text-[#4c7bab]">
-                  Angels&apos; Messages driving our campus evangelism and mission
+                  Angels&apos; Messages driving our campus evangelism and
+                  mission
                 </p>
               </div>
             </div>
@@ -387,8 +391,8 @@ export default function MasAmicusWebsite() {
             </h2>
           </div>
           <p className="hidden max-w-md text-sm leading-7 text-[#4c7bab] md:block">
-            Three chapters, three videos, and three biblical themes that trace
-            a path from courage to freedom to renewed calling.
+            Three chapters, three videos, and three biblical themes that trace a
+            path from courage to freedom to renewed calling.
           </p>
         </div>
 
@@ -475,7 +479,10 @@ export default function MasAmicusWebsite() {
                         }
                       }}
                     >
-                      <source src={videoSources[batch.blobPath] ?? batch.video} type="video/mp4" />
+                      <source
+                        src={videoSources[batch.blobPath] ?? batch.video}
+                        type="video/mp4"
+                      />
                     </video>
                     {playingIndex !== index ? (
                       <button
@@ -521,7 +528,8 @@ export default function MasAmicusWebsite() {
                     </div>
 
                     <p className="mt-4 text-xs uppercase tracking-[0.28em] text-[#5b8fc4]">
-                      Swipe the deck or tap a year bookmark to move between batches.
+                      Swipe the deck or tap a year bookmark to move between
+                      batches.
                     </p>
                   </div>
                 </article>
