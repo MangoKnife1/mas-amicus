@@ -11,8 +11,9 @@ function publicBlobUrl(storeName: string, path: string) {
 }
 
 async function resolveVideoUrl(videoName: string) {
+  const store = process.env.NEXT_PUBLIC_BLOB_STORE_NAME || "amicus-blob";
   try {
-    const { blobs } = await list({ prefix: videoName, limit: 25 });
+    const { blobs } = await list({ store, prefix: videoName, limit: 25 });
 
     const blob = blobs.find(
       (entry) =>
@@ -23,7 +24,10 @@ async function resolveVideoUrl(videoName: string) {
 
     if (blob) {
       // We return a same-origin proxy URL so the browser avoids CORS issues
-      return [videoName, `/api/blob-videos/proxy/${videoName}`] as [string, string];
+      return [videoName, `/api/blob-videos/proxy/${videoName}`] as [
+        string,
+        string,
+      ];
     }
   } catch (err) {
     // listing may fail locally or without credentials — we'll fall back below
