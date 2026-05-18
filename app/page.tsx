@@ -11,7 +11,7 @@ export default function MasAmicusWebsite() {
       role: "Rooted in 2 Samuel",
       motto:
         "A chapter of courage, covenant, and steadfast leadership shaped by David's story in 2 Samuel.",
-      video: "/conquerors-video.mp4",
+      video: process.env.NEXT_PUBLIC_BLOB_CONQUERORS_VIDEO_URL ?? "/conquerors-video.mp4",
       themeLabel: "Courage under God",
       themeCopy:
         "Inspired by David's rise, repentance, and reliance on God through the highs and lows of leadership.",
@@ -23,7 +23,7 @@ export default function MasAmicusWebsite() {
       role: "Rooted in Exodus",
       motto:
         "A chapter defined by deliverance, trust, and the journey from bondage into promise.",
-      video: "/exodus-video.mp4",
+      video: process.env.NEXT_PUBLIC_BLOB_EXODUS_VIDEO_URL ?? "/exodus-video.mp4",
       themeLabel: "Freedom and direction",
       themeCopy:
         "Inspired by Moses, the sea crossing, and the God who leads His people step by step.",
@@ -35,7 +35,7 @@ export default function MasAmicusWebsite() {
       role: "Rooted in Jonah",
       motto:
         "A chapter shaped by calling, repentance, and renewed direction after the deep place.",
-      video: "/nevuah-video.mp4",
+      video: process.env.NEXT_PUBLIC_BLOB_NEVUAH_VIDEO_URL ?? "/nevuah-video.mp4",
       themeLabel: "Called again",
       themeCopy:
         "Inspired by Jonah's journey from resistance to obedience and a second chance to serve.",
@@ -44,6 +44,7 @@ export default function MasAmicusWebsite() {
   ];
 
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+    const [selectedIndex, setSelectedIndex] = useState(0);
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
 
   const playVideo = (index: number) => {
@@ -270,76 +271,130 @@ export default function MasAmicusWebsite() {
           </p>
         </div>
 
-        <div className="mt-10 flex snap-x snap-mandatory gap-5 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          {batches.map((batch, index) => (
-            <article
-              key={batch.year}
-              className="min-w-[88%] snap-center overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/82 shadow-[0_20px_50px_rgba(31,110,184,0.08)] sm:min-w-[74%] lg:min-w-[60%]"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb] sm:aspect-[16/9]">
-                <video
-                  ref={(element) => {
-                    videoRefs.current[index] = element;
-                  }}
-                  className="h-full w-full object-cover"
-                  controls={playingIndex === index}
-                  playsInline
-                  preload="metadata"
-                  poster={batch.poster}
-                  onEnded={() => setPlayingIndex(null)}
-                  onPause={() => {
-                    if (playingIndex === index) {
-                      setPlayingIndex(null);
-                    }
-                  }}
+        <div className="mt-10 grid gap-5 lg:grid-cols-[14rem_1fr] lg:items-center">
+          <aside className="flex flex-row gap-3 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden lg:flex-col lg:overflow-visible lg:pb-0">
+            {batches.map((batch, index) => {
+              const isActive = selectedIndex === index;
+
+              return (
+                <button
+                  key={batch.year}
+                  type="button"
+                  onClick={() => setSelectedIndex(index)}
+                  className={`group relative flex min-w-[10rem] items-center justify-between gap-3 rounded-r-[1.25rem] rounded-l-full border px-4 py-3 text-left transition duration-300 lg:min-w-0 ${
+                    isActive
+                      ? "border-[#1f6eb8] bg-[#1f6eb8] text-white shadow-[0_14px_30px_rgba(31,110,184,0.22)]"
+                      : "border-[#9fc7e8]/60 bg-white/80 text-[#12468f] hover:bg-[#f2faff]"
+                  }`}
+                  aria-label={`Select ${batch.year} ${batch.name}`}
                 >
-                  <source src={batch.video} type="video/mp4" />
-                </video>
-                {playingIndex !== index ? (
-                  <button
-                    type="button"
-                    onClick={() => playVideo(index)}
-                    className="absolute inset-0 flex items-center justify-center bg-[linear-gradient(180deg,rgba(6,24,47,0.16),rgba(6,24,47,0.42))] text-white transition hover:bg-[linear-gradient(180deg,rgba(6,24,47,0.22),rgba(6,24,47,0.55))]"
-                    aria-label={`Play ${batch.name} video`}
-                  >
-                    <span className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/15 text-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] backdrop-blur">
-                      ▶
+                  <span className="flex flex-col">
+                    <span className="text-[0.65rem] uppercase tracking-[0.3em] opacity-75">
+                      {batch.year}
                     </span>
-                  </button>
-                ) : null}
+                    <span className="mt-1 text-sm font-semibold leading-5">
+                      {batch.name}
+                    </span>
+                  </span>
 
-                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-white/75">
-                    {batch.year}
-                  </p>
-                  <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl text-white">
-                    {batch.name}
-                  </h3>
-                </div>
-              </div>
+                  <span
+                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm font-bold transition ${
+                      isActive
+                        ? "border-white/30 bg-white/15 text-white"
+                        : "border-[#9fc7e8]/60 bg-[#f6fbff] text-[#1f6eb8]"
+                    }`}
+                  >
+                    →
+                  </span>
+                </button>
+              );
+            })}
+          </aside>
 
-              <div className="p-6">
-                <p className="text-sm uppercase tracking-[0.3em] text-[#5b8fc4]">
-                  {batch.role}
-                </p>
-                <p className="mt-3 text-sm leading-7 text-[#4c7bab]">
-                  {batch.motto}
-                </p>
+          <div className="relative min-h-[44rem] overflow-hidden rounded-[2.5rem] border border-[#9fc7e8]/45 bg-white/65 p-4 shadow-[0_20px_50px_rgba(31,110,184,0.08)] backdrop-blur-xl lg:p-6">
+            <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(120,213,240,0.16),transparent_38%)]" />
 
-                <div className="mt-5 rounded-[1.3rem] border border-[#9fc7e8]/45 bg-[#f6fbff] p-4">
-                  <p className="text-xs uppercase tracking-[0.3em] text-[#5b8fc4]">
-                    Theme
-                  </p>
-                  <p className="mt-2 text-sm font-semibold text-[#12468f]">
-                    {batch.themeLabel}
-                  </p>
-                  <p className="mt-2 text-sm leading-7 text-[#4c7bab]">
-                    {batch.themeCopy}
-                  </p>
-                </div>
-              </div>
-            </article>
-          ))}
+            {batches.map((batch, index) => {
+              const isActive = selectedIndex === index;
+              const isBefore = index < selectedIndex;
+
+              return (
+                <article
+                  key={batch.year}
+                  className={`absolute left-1/2 top-1/2 w-[min(92vw,42rem)] -translate-x-1/2 -translate-y-1/2 overflow-hidden rounded-[2rem] border border-[#9fc7e8]/45 bg-white/92 shadow-[0_20px_50px_rgba(31,110,184,0.12)] transition-all duration-500 ${
+                    isActive
+                      ? "z-30 scale-100 translate-y-0 rotate-0 opacity-100"
+                      : isBefore
+                        ? "z-10 -translate-x-[58%] scale-[0.88] rotate-[-10deg] opacity-60"
+                        : "z-10 translate-x-[58%] scale-[0.88] rotate-[10deg] opacity-60"
+                  }`}
+                >
+                  <div className="relative aspect-[4/3] overflow-hidden bg-[#dff3fb] sm:aspect-[16/9]">
+                    <video
+                      ref={(element) => {
+                        videoRefs.current[index] = element;
+                      }}
+                      className="h-full w-full object-cover"
+                      controls={playingIndex === index}
+                      playsInline
+                      preload="metadata"
+                      poster={batch.poster}
+                      onEnded={() => setPlayingIndex(null)}
+                      onPause={() => {
+                        if (playingIndex === index) {
+                          setPlayingIndex(null);
+                        }
+                      }}
+                    >
+                      <source src={batch.video} type="video/mp4" />
+                    </video>
+                    {playingIndex !== index ? (
+                      <button
+                        type="button"
+                        onClick={() => playVideo(index)}
+                        className="absolute inset-0 flex items-center justify-center bg-[linear-gradient(180deg,rgba(6,24,47,0.16),rgba(6,24,47,0.42))] text-white transition hover:bg-[linear-gradient(180deg,rgba(6,24,47,0.22),rgba(6,24,47,0.55))]"
+                        aria-label={`Play ${batch.name} video`}
+                      >
+                        <span className="grid h-20 w-20 place-items-center rounded-full border border-white/30 bg-white/15 text-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] backdrop-blur">
+                          ▶
+                        </span>
+                      </button>
+                    ) : null}
+
+                    <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#06182f]/80 to-transparent p-4">
+                      <p className="text-xs uppercase tracking-[0.3em] text-white/75">
+                        {batch.year}
+                      </p>
+                      <h3 className="mt-2 font-[family-name:var(--font-fraunces)] text-2xl text-white">
+                        {batch.name}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="p-6">
+                    <p className="text-sm uppercase tracking-[0.3em] text-[#5b8fc4]">
+                      {batch.role}
+                    </p>
+                    <p className="mt-3 text-sm leading-7 text-[#4c7bab]">
+                      {batch.motto}
+                    </p>
+
+                    <div className="mt-5 rounded-[1.3rem] border border-[#9fc7e8]/45 bg-[#f6fbff] p-4">
+                      <p className="text-xs uppercase tracking-[0.3em] text-[#5b8fc4]">
+                        Theme
+                      </p>
+                      <p className="mt-2 text-sm font-semibold text-[#12468f]">
+                        {batch.themeLabel}
+                      </p>
+                      <p className="mt-2 text-sm leading-7 text-[#4c7bab]">
+                        {batch.themeCopy}
+                      </p>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
         </div>
       </section>
 
