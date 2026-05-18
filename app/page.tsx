@@ -465,11 +465,13 @@ export default function MasAmicusWebsite() {
                       ref={(element) => {
                         videoRefs.current[index] = element;
                       }}
-                      className="relative z-20 h-full w-full object-cover"
+                      className="h-full w-full object-cover"
                       controls={playingIndex === index}
                       playsInline
                       preload="metadata"
                       poster={batch.poster}
+                      muted
+                      crossOrigin="anonymous"
                       onEnded={() => setPlayingIndex(null)}
                       onPause={() => {
                         if (playingIndex === index) {
@@ -482,6 +484,12 @@ export default function MasAmicusWebsite() {
                         type="video/mp4"
                       />
                     </video>
+
+                    {/* DEBUG */}
+                    <p className="absolute top-2 left-2 z-50 rounded bg-black/70 px-2 py-1 text-xs text-white">
+                      {videoSources[batch.blobPath] || "Loading video..."}
+                    </p>
+
                     {playingIndex !== index ? (
                       <button
                         type="button"
