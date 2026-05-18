@@ -485,11 +485,6 @@ export default function MasAmicusWebsite() {
                       />
                     </video>
 
-                    {/* DEBUG */}
-                    <p className="absolute top-2 left-2 z-50 rounded bg-black/70 px-2 py-1 text-xs text-white">
-                      {videoSources[batch.blobPath] || "Loading video..."}
-                    </p>
-
                     {playingIndex !== index ? (
                       <button
                         type="button"
