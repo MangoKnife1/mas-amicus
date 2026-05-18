@@ -8,6 +8,7 @@ export default function MasAmicusWebsite() {
     {
       year: "2023",
       name: "Batch Conquerors",
+      blobPath: "conquerors-video",
       role: "Rooted in 2 Samuel",
       motto:
         "A chapter of courage, covenant, and steadfast leadership shaped by David's story in 2 Samuel.",
@@ -20,6 +21,7 @@ export default function MasAmicusWebsite() {
     {
       year: "2024",
       name: "Batch Exodus",
+      blobPath: "exodus-video",
       role: "Rooted in Exodus",
       motto:
         "A chapter defined by deliverance, trust, and the journey from bondage into promise.",
@@ -32,6 +34,7 @@ export default function MasAmicusWebsite() {
     {
       year: "2025",
       name: "Batch Nevuah",
+      blobPath: "nevuah-video",
       role: "Rooted in Jonah",
       motto:
         "A chapter shaped by calling, repentance, and renewed direction after the deep place.",
@@ -46,6 +49,7 @@ export default function MasAmicusWebsite() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const carouselRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLElement | null)[]>([]);
+  const [videoSources, setVideoSources] = useState<Record<string, string>>({});
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [playingIndex, setPlayingIndex] = useState<number | null>(null);
 
@@ -121,6 +125,25 @@ export default function MasAmicusWebsite() {
 
     return () => observer.disconnect();
   }, [selectedIndex]);
+
+  useEffect(() => {
+    const loadVideoSources = async () => {
+      try {
+        const response = await fetch("/api/blob-videos");
+
+        if (!response.ok) {
+          return;
+        }
+
+        const data = (await response.json()) as Record<string, string>;
+        setVideoSources(data);
+      } catch {
+        return;
+      }
+    };
+
+    void loadVideoSources();
+  }, []);
 
   const syncSelectedIndex = () => {
     const container = carouselRef.current;
@@ -452,7 +475,7 @@ export default function MasAmicusWebsite() {
                         }
                       }}
                     >
-                      <source src={batch.video} type="video/mp4" />
+                      <source src={videoSources[batch.blobPath] ?? batch.video} type="video/mp4" />
                     </video>
                     {playingIndex !== index ? (
                       <button
