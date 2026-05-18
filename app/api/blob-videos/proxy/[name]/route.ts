@@ -22,7 +22,7 @@ export async function GET(_request: Request, context: any) {
   try {
     const { blobs } = await (list as any)({ store, prefix: name, limit: 25 });
     const blob = blobs.find(
-      (entry) =>
+      (entry: any) =>
         entry.pathname === name ||
         entry.pathname.startsWith(`${name}.`) ||
         entry.pathname.startsWith(`${name}/`),

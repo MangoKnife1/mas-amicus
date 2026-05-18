@@ -13,10 +13,14 @@ function publicBlobUrl(storeName: string, path: string) {
 async function resolveVideoUrl(videoName: string) {
   const store = process.env.NEXT_PUBLIC_BLOB_STORE_NAME || "amicus-blob";
   try {
-    const { blobs } = await (list as any)({ store, prefix: videoName, limit: 25 });
+    const { blobs } = await (list as any)({
+      store,
+      prefix: videoName,
+      limit: 25,
+    });
 
     const blob = blobs.find(
-      (entry) =>
+      (entry: any) =>
         entry.pathname === videoName ||
         entry.pathname.startsWith(`${videoName}.`) ||
         entry.pathname.startsWith(`${videoName}/`),
